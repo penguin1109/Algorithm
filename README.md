@@ -14,4 +14,5 @@
 ### -Google Kick Start
  - 해결한 Google Kick Start의 파이썬 소스 코드입니다.
 
-
+### -EDOC
+ - 이화여대 프로그래밍 동아리 EDOC에서 풀이한 파이썬 소스 코드입니다.
