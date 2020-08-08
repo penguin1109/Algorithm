@@ -1,0 +1,106 @@
+#2020.8.8(SWEA)
+
+#5656 - [모의 SW 역량 테스트] 벽돌 깨기
+t = int(input())
+import copy
+from collections import deque
+dx,dy = [-1,1,0,0],[0,0,-1,1]
+#블록 없애는 함수
+def delete(k,board,v):
+    file = deque()
+    file.append(k)
+    while file:
+        idx = file.popleft()
+        now = board[idx]
+        if now == 1:
+            board[idx] = 0
+        elif now > 1:
+            board[idx] = 0
+            x,y = idx//w, idx%w
+            for i in range(4):
+                for j in range(1, now):
+                    a,b = x+dx[i]*j, y+dy[i]*j
+                    if 0<= a<h and 0 <= b<w:
+                        file.append(a*w+b)
+    recover(board,v)
+    return
+#블록 빈자리 갱신하는 함수(문자열 처리로 가능할 수도)
+def recover(board,v):
+    now = [[]for _ in range(w)]
+    for i in range(w):
+        for j in range(i,len(board),w):
+            if board[j] != 0:
+                now[i].append(board[j])
+    for k in range(w):
+        now[k] = [0]*(h-len(now[k])) + now[k]
+        for p in range(h):
+            board[p*w+k] = now[k][p]
+
+    choose(v+1, board)
+    return
+
+
+#총 n개의 구슬을 선택할 때 까지 for문 이용하는 함수(재귀적으로 진행 가능)
+def choose(v,board):
+    global ans
+    #꼭 n개의 구슬을 떨어뜨리지 않아도 답이 나오는 경우가 존재하기 때문에
+    #매번 최솟값을 갱신 해 준다.
+    ans = min(ans, w*h-board.count(0))
+    if v == n:
+        return
+    for i in range(w):
+        if board[i] != 0:
+            maps = copy.deepcopy(board)
+            delete(i, maps, v)
+        else:
+            k = i
+            while board[k] == 0:
+                k += w
+                if k >= len(board):
+                    break
+            maps = copy.deepcopy(board)
+            if k < len(board):
+                delete(k,maps,v)
+
+for i in range(1, t+1):
+    ans = 9999999999999999
+    n,w,h = map(int, input().split())
+    board = []
+    for _ in range(h):
+        board += list(map(int, input().split()))
+    choose(0, board)
+    print('#'+str(i)+' '+str(ans))
+
+
+#1494 - 사랑의 카운슬러
+#역시나 모든 상황을 다 해보는 백트래킹 방법은 시간 초과가 발생하였다.
+#그래서 일일히 벡터 쌍을 자세하게 숫자로, combinations을 이용하는 등
+#방법을 써서 구하는 것 보다는
+#리스트에 1이면 짝이 존재 아니면 존재 아니라는 식으로 n//2번 dfs를 실시
+#1이면 빼고 0이면 더해주는 식으로 진행
+t = int(input())
+def dfs(now, v):
+    global ans
+    if v == n//2:
+        x,y = 0,0
+        for i in range(n):
+            if visit[i] == 0:
+                x+=file[i][0]
+                y+=file[i][1]
+            else:
+                x -= file[i][0]
+                y -= file[i][1]
+        ans = min(ans, x**2+y**2)
+        return
+    for i in range(now, n):
+        if visit[i] == 0:
+            visit[i] = 1
+            dfs(i+1, v+1)
+            visit[i] = 0
+for i in range(1, t+1):
+    ans = 99999999999999999999
+    n = int(input())
+    file = [list(map(int, input().split())) for _ in range(n)]
+    visit = [0]*n
+    dfs(0,0)
+    print('#'+str(i)+' '+str(ans))
