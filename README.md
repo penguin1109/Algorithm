@@ -7,9 +7,6 @@
 - 이화여대 프로그래밍 동아리 EDOC에서 활동한 코드 내용도 담겨 있습니다.
 - [소스 코드](https://github.com/penguin1109/Algorithm/tree/master/Edoc)
 - [소스 코드](https://github.com/penguin1109/Algorithm/tree/master/BOJ)
-
-### -SW Expert Academy
- - 해결한 SWEA의 문제들의 D3~D6까지의 파이썬 소스 코드입니다.
     
 ### -프로그래머스
  - 해결한 프로그래머스의 lv1~lv3까지의 파이썬 소스 코드입니다.
