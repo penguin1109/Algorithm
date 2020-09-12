@@ -64,3 +64,57 @@ make('1', 0)
 ```
 
 #### 두 백트래킹 문제를 풀면서 얻은 결론은 재귀 함수는 호출할 수록 시간복잡도를 높인다는 점, 그렇기 때문에 중간 중간에 제한을 걸어서 **답이 될 수 없을 것들은 greedy의 관점으로** 중단해주는 것이 좋다.
+
+
+#### BOJ 4132. Subset Sum
+- 쉽게 풀 수 있는 백트래킹 문제였다. 우선 구하고자 하는 것은 주어진 값들을 이용해서 만들 수 있는, 한계값보다는 크거나 같지만 최소인 금액을 구하는 것이다. 중복 사용은 불가하니까 무조건 각각의 수를 순서대로 체크하면 된다.
+- 시간 초과를 줄이기 위해서 다음 함수를 호출하기 전에 현재 값이 최소값보다 크면 재귀 함수를 부르지 않았다.
+```
+import sys
+n,m = map(int, sys.stdin.readline().split())
+milk = [int(sys.stdin.readline()) for _ in range(m)]
+milk = sorted(milk)
+made_milk = 99999999999
+def make(temp, v):
+    global made_milk
+    if v == m:
+        if temp == n:
+            print(n)
+            sys.exit()
+        elif temp > n:
+            made_milk = min(made_milk, temp)
+        return
+    else:
+        if temp + milk[v] < made_milk:
+            make(temp+milk[v], v+1)
+        make(temp, v+1)
+
+if sum(milk) < n:
+    print('IMPOSSIBLE')
+else:
+    make(0,0)
+    print(made_milk)
+```
+
+
+#### BOJ 1182. 부분 수열의 합
+- n개의 정수로 이루어진 수열의 부분 수열의 합이 정해주는 수인 s일 때의 개수를 구하는 것이었다. 처음에는 시간 초과를 줄이기 위해서 먼저 주어진 n개의 수열을 정렬해서 s를 초과하면 바로 return 하려고 했으나, 알고 보니 '부분 수열'은 기존 수열의 순서와 일치 해야 하는 것이었기 때문에 정렬할 수는 없었다.
+- 그러나 그 부분을 수정하고도 문제가 있었는데, s가 되었을 때 바로 return했기 때문이었다. 
+- 이는 그렇게 해주면 수열게 양수, 음수, 0 모두 있기 때문에 다른 경우가 존재할 수 있기 때문이다. 따라서 그 부분을 수정해 주고, s일때에 원소가 포함되는 지의 여부까지 확인해주는 것을 추가하고 답이 맞았다.
+```
+import sys
+n,s = map(int, sys.stdin.readline().split())
+num = list(map(int, sys.stdin.readline().split()))
+#부분 수열이면 원래 수열의 순서와 동일해야 하기 때문에 정렬해서 풀면 안됨
+count = []
+def find(temp, v, all):
+    global count
+    if temp == s and len(all):
+        count.append(all)
+    for i in range(v, n):
+        find(temp + num[i], i+1, all+str(i))
+
+
+find(0,0,'')
+print(len(count))
+```
