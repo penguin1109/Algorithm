@@ -12,9 +12,11 @@
       - treenow.left != None이면 treenow = treenow.left이다.
       **treenow.data[0] < newtree.data[0]일때도 마찬가지로, 이번엔 right로 진행해 준다.**
   3. 전위 순회, 후위 순회에 대해서 함수를 만들고 이를 answer list에 넣어주면 된다.
+  - 전위 순회는 (노드 -> 왼쪽 자식 -> 오른쪽 자식)이기 때문에 자식 방문 전에 노드를 path에 넣음
+  - 후위 순회는 (왼쪽 자식 -> 오른쪽 자식 -> 노드)이기 때문에 노드를 자식 방문 후에 path에 넣음
   
-  ```py3
-  import sys
+```py3
+import sys
 sys.setrecursionlimit(10**8)
 
 class Tree:
@@ -24,28 +26,22 @@ class Tree:
         self.right = None
         self.data = None
         self.index = None
-        
-#전위 순회
+
 def preorder(root, path):
     if root == None:
         return path
-    
-#전위 순회는 (노드 -> 왼쪽 자식 -> 오른쪽 자식)이기 때문에 자식 방문 전에 노드를 path에 넣음
     path.append(root.index)
     preorder(root.left, path)
     preorder(root.right, path)
 
     return path
-    
-#후위 순회
+
 def postorder(leaf, path):
     if leaf == None:
         return path
 
     postorder(leaf.left, path)
     postorder(leaf.right, path)
-    
-#후위 순회는 (왼쪽 자식 -> 오른쪽 자식 -> 노드)이기 때문에 노드를 자식 방문 후에 path에 넣음
     path.append(leaf.index)
     return path
     
@@ -53,13 +49,11 @@ def postorder(leaf, path):
 def solution(nodeinfo):
     root = None
     data, answer = [], []
-    #index 데이터를 각각의 노드 정보에 추가해 줌
     for idx, node in enumerate(nodeinfo):
         nodeinfo[idx].append(idx+1)
-    #y값을 기준으로 내림차순으로 정렬을 해 줌
-    data = sorted(nodeinfo, key = lambda x:x[1], reverse = True)
+    data = sorted(nodeinfo, key = lambda x:x[1], reverse = True)  
 
-#node에는 (x좌표, y좌표, index)가 순서대로 저장    
+
     for idx, node in enumerate(data):
         newtree = Tree()
         newtree.index = node[2]
@@ -70,16 +64,15 @@ def solution(nodeinfo):
         else:
             treenow = root
             while True:
-#기존의 tree에서 오른쪽은 x좌표가 더 큰 노드, 왼쪽은 x좌표가 더 작은 노드가 들어간다.
                 if newtree.data[0] > treenow.data[0]:
-#오른쪽에 위치를 정해주어야 함
+
                     if treenow.right == None:
                         treenow.right = newtree
                         break
                     else:
                         treenow = treenow.right
                 else:
-#왼쪽에 위치를 정해 주어야 함
+
                     if treenow.left == None:
                         treenow.left = newtree
                         break
