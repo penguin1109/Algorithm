@@ -30,7 +30,7 @@ def preorder(root, path):
     if root == None:
         return path
     
-    #전위 순회는 (노드 -> 왼쪽 자식 -> 오른쪽 자식)이기 때문에 자식 방문 전에 노드를 path에 넣음
+#전위 순회는 (노드 -> 왼쪽 자식 -> 오른쪽 자식)이기 때문에 자식 방문 전에 노드를 path에 넣음
     path.append(root.index)
     preorder(root.left, path)
     preorder(root.right, path)
@@ -44,7 +44,8 @@ def postorder(leaf, path):
 
     postorder(leaf.left, path)
     postorder(leaf.right, path)
-    #후위 순회는 (왼쪽 자식 -> 오른쪽 자식 -> 노드)이기 때문에 노드를 자식 방문 후에 path에 넣음
+    
+#후위 순회는 (왼쪽 자식 -> 오른쪽 자식 -> 노드)이기 때문에 노드를 자식 방문 후에 path에 넣음
     path.append(leaf.index)
     return path
     
@@ -58,7 +59,7 @@ def solution(nodeinfo):
     #y값을 기준으로 내림차순으로 정렬을 해 줌
     data = sorted(nodeinfo, key = lambda x:x[1], reverse = True)
 
-    #node에는 (x좌표, y좌표, index)가 순서대로 저장    
+#node에는 (x좌표, y좌표, index)가 순서대로 저장    
     for idx, node in enumerate(data):
         newtree = Tree()
         newtree.index = node[2]
@@ -69,16 +70,16 @@ def solution(nodeinfo):
         else:
             treenow = root
             while True:
-                #기존의 tree에서 오른쪽은 x좌표가 더 큰 노드, 왼쪽은 x좌표가 더 작은 노드가 들어간다.
+#기존의 tree에서 오른쪽은 x좌표가 더 큰 노드, 왼쪽은 x좌표가 더 작은 노드가 들어간다.
                 if newtree.data[0] > treenow.data[0]:
-                #오른쪽에 위치를 정해주어야 함
+#오른쪽에 위치를 정해주어야 함
                     if treenow.right == None:
                         treenow.right = newtree
                         break
                     else:
                         treenow = treenow.right
                 else:
-                #왼쪽에 위치를 정해 주어야 함
+#왼쪽에 위치를 정해 주어야 함
                     if treenow.left == None:
                         treenow.left = newtree
                         break
