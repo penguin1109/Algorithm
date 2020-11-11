@@ -1,9 +1,9 @@
-###이진 검색 트리(Binary Search Tree)
-####이진 검색 트리의 조건
+### 이진 검색 트리(Binary Search Tree)  
+#### 이진 검색 트리의 조건  
 1. 왼쪽 서브 트리의 노드의 key값은 자신의 노드의 key값보다 작아야 한다.
 2. 오른쪽 서브 트리의 노드의 key값은 자신의 노드의 key값보다 커야 한다.
 
-####class Node구현
+#### class Node구현  
 ```py3
 class Node:
   def __init__(self, key, value):
@@ -15,7 +15,7 @@ class Node:
 
 - self.left와 self.right는 각각 왼쪽 자식 노드와 오른쪽 자식 노드에 대한 참조의 내용을 담고 있다.
 
-####class BinSearchTree 구현
+#### class BinSearchTree 구현  
 ```py3
 class BinSearchTree:
     def __init__(self):
@@ -137,7 +137,7 @@ class BinSearchTree:
             else:
                 parent.right = left.left
 ```
-####위에서 구현한 delete, 즉 원소 제거 함수에 대해 설명을 해보자면
+#### 위에서 구현한 delete, 즉 원소 제거 함수에 대해 설명을 해보자면  
 1. 삭제할 노드의 왼쪽 sub tree에서 제일 큰 노드를 찾는다.
 2. 삭제할 노드의 위치의 key와 value값을 구해낸 제일 큰 노드의 값으로 바꾸어 준다.
 3. 옮긴 노드를 삭제한다.
