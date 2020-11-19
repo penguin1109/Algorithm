@@ -1,3 +1,4 @@
+#lv3.기지국 설치
 #Sol1. 효율성 제외 정확도 까지만 통과
 def solution(n, stations, w):
     answer = 0
