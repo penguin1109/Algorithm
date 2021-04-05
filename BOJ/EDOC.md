@@ -1,251 +1,160 @@
-## 02.03 스터디 - EDOC
-
-#### 2504 - 괄호의 값
+#### GREEDY
+1. BOJ 2828 - 사과 담기 게임
 ```py
-# 2504 - 괼호의 값
-# 주어진 괄호열을 읽고 그 괄호값을 앞에서 정의한대로 계산하여 출력할 수 있도록 한다.
+# 모든 사과를 담기 위한 바구니의 이동 거리의 최솟값을 구하여라
+import sys
+input = sys.stdin.readline
+
+
+
+n, m = map(int, input().split())
+j = int(input())
+
+ans = 0
+st, ed = 1, m
+
+move = 0
+
+for _ in range(j):
+    place = int(input())
+    if (place > ed): # 사과 위치 > 오른쪽 끝 
+        move = (place - ed)
+        st, ed = place - m + 1, place
+    elif (place < st): # 사과 위치 < 왼쪽 끝
+        move = (st - place)
+        st, ed = place, place + m - 1
+    else:
+        move = 0
+    ans += move
+
+print(ans)
+```
+2. BOJ 1758 - 알바생 강호
+```py
+# 1758 - 알바생 강호
+# 팁 = (강호에게 주려고 한 동 - 등수 - 1)
+# 팁이 음수면 강호는 돈을 받을 수 없음
+# 손님의 순서를 바꾸었을 때 받을 수 있는 팁의 최댓값은?
 
 import sys
 input = sys.stdin.readline
-from collections import deque
 
-string = deque(list(str(input().strip())))
+tips = []
 
-Open, Close = ['(', '['], [')', ']']
+N = int(input())
+for _ in range(N):
+    tips.append(int(input()))
 
-answer = 0
-calc, nums = [], [] # 연산자 저장 리스트, 피연산자 저장 리스트
-# 길이의 최댓값이 30으로 짧기 때문에 deque를 사용하기 보다는 그냥 리스트를 사용
+tips = sorted(tips, reverse = True)
+ans = 0
+for order, tip in enumerate(tips):
+    ans += max(0, (tip-order))
 
-while string: # 입력받은 문자열의 모든 수를 고려해 줄 수 있을 때까지
-    a = string.popleft()
-    if a in Open: # 열림연산에 의한 2, 3과 올바른 괄호열의 연산 결과에 의한 2,3 또는 nums의 수들을 구분해 주기 위해 음수를 붙임
-        calc.append(a)
-        if a == '(':
-            nums.append(-2)
-        else:
-            nums.append(-3)
-    elif a in Close:
-        # 현재 닫힘 괄호와 짝이 맞는 열림 괄호가 나올 때 까지 while 반복문으로 nums에 있는 수들의 연산을 수행
-        # 그 과정에서 만약에 올바른 괄호열이 될 수 없다면 0을 출력하고 sys.exit()으로 아얘 탈출한다.
-        if a == ']':
-            temp = 0 
-            while True: 
-                if len(nums) == 0: # 닫힘 괄호가 먼저 나와서 올바른 괄호열이 아닌 경우
-                    print(0)
-                    sys.exit()
-                curr = nums.pop()
-                if (curr > 0):
-                    temp += curr
-                elif (curr == -2): # 열림과 닫힘의 짝이 안 맞아서 올바른 괄호열이 아닌 경우
-                    print(0)
-                    sys.exit()
-                elif (curr == -3): # 올바른 괄호열인 경우에 현재 닫힘 괄호와 짝이 맞는 열림 괄호를 찾은 경우 (음수로 구분해 놓음)
-                    if temp == 0:
-                        temp = 1
-                    temp *= 3
-                    nums.append(temp)
-                    break
-        else:
-            temp = 0
-            while True:
-                if len(nums) == 0:
-                    print(0)
-                    sys.exit()
-                curr = nums.pop()
-                if (curr > 0):
-                    temp += curr
-                elif (curr == -3): # 올바른 괄호열이 아닌 경우
-                    print(0)
-                    sys.exit()
-                elif (curr == -2): # 올바른 괄호열인 경우에 현재 닫힘 괄호와 짝이 맞는 열림 괄호를 찾은 경우
-                    if temp == 0:
-                        temp = 1
-                    temp *= 2
-                    nums.append(temp)
-                    break
-
-while len(nums) > 0:
-    a = nums.pop()
-    if (a < 0):
-        print(0)
-        sys.exit()
-    else:
-        answer += a
-print(answer)
+print(ans)
 ```
 
-#### 10025 - 게으른 백곰
-- 사실상 주어진 이동할 수 있는 거리인 K에서 2xK+1의 값이 제일 멀리있는 얼음의 위치보다 크다면 곰의 위치는 의미가 없다.
-- 그렇기 때문에 크다면 그냥 모든 얼음의 합을 구해서 exit(0)을 해주면 되고, 만약에 작다면 각각의 위치에서의 처음부터의 전체 얼음의 양을 저장해준 뒤에 곰의 위치에 따라서 (k+1 <= position <= n-k-1)로 지정을 해서 부분합으로 curr = max(answer, arr[position+k] - arr[position-k-1]) 이런식으로 해주면 풀리는 문제이다.
+3. BOJ 4889 - 안정적인 문자열
+- 문자열의 길이가 애초부터 짝수이기 때문에 아래와 같은 풀이가 가능하다.
+- 그리디로 풀 수 있는 문제인 이유는 모든 경우의 수를 따지지 않고도 이미 {}와 같은 상태는 제외하고 나중에 한꺼번에 짝이 생성되지 않은 괄호끼리 묶어서 행할 수 있는 연산을 계산했기 때문이다.
+ 
 ```py
-# 10025 - 게으른 백곰
-# 택한 최적의 위치로부터 k만큼 떨어진 거리 내에 있는 얼음들의 합의 최댓값을 출력한다.
-
-import sys
-input = sys.stdin.readline
-sys.setrecursionlimit(10**8)
 from collections import deque
 
-n, k = map(int, input().split())
-ice = [list(map(int, input().split())) for _ in range(n)]
-ice.sort(key = lambda x: x[1])
-
-ices = [0]*(ice[-1][-1] + 1)
-max_length = ice[-1][-1] # 최대 길이
-
-for i in range(n):
-    a, b = ice[i][0], ice[i][1]
-    ices[b] = a # ices[b]는 b번째 위치에 저장된 얼음의 양이다.
-
-board = deque()
-max_ice, temp_ice = 0, 0 # 지금까지 최대로 수용 가능했던 얼음의 양, 현재 상황에서 수용 가능한 얼음의 양
-
-for l in range(max_length+1):
-    curr_ice = ices[l]
-    if l < 2*k + 1:
-        temp_ice += curr_ice
-        board.append(curr_ice) # board리스트에는 북극곰이 위치를 이동한 것을 기록해 놓기 위해서 현재 위치(l)에서 수용 가능한 얼음의 양을 저장해 둔다.
-        max_ice = max(max_ice, temp_ice)
-    else:
-        unavailable = board.popleft()
-        temp_ice = temp_ice - unavailable + curr_ice
-        max_ice = max(max_ice, temp_ice)
-        board.append(curr_ice)
-print(max_ice)
-```
-
-#### 17298 - 오큰수
-- Sol1
-```py
-n = int(input())
-num = list(map(int, input().split(' ')))
-stack = []
-ans = []
-stack.append(num[-1])
-for i in range(n-2, -1,-1):
-    while stack and stack[-1] <= num[i]:
-        temp = stack.pop()
+def solution(string):
+    change = 0
+    stack = deque()
+    string = deque(string)
+    while string:
+        curr = string.popleft()
+        if not stack:
+            stack.append(curr)
+        else:
+            if stack:
+                if curr == '{':
+                    stack.append(curr)
+                else:
+                    if stack[-1] == '{':
+                        stack.pop()
+                    else:
+                        stack.append(curr)
     if stack:
-        ans.append(stack[-1])
-    else:
-        ans.append(-1)
-    stack.append(num[i])
+        while stack:
+            a, b = stack.popleft(), stack.popleft()
+            # 두 괄호가 같으면 둘 중 하나만 바꿔주면 된다.
+            if (a == b):
+                change += 1
+            # 두 괄호가 다르면서 순서가 바뀌어 있으면 두 괄호 모두 바꿔 주어야 한다.
+            elif (a == '}' and b == '{'):
+                change += 2
 
-ans = ans[::-1]
-ans.append(-1)
+
+    return change
+
+idx = 1
+while True:
+    ans = 0
+    string = list(map(str, input().strip()))
+    if '-' in string:
+        break
+    ans = solution(string)
+    print(f'{idx}. {ans}')
+    idx += 1
+```
+
+4. BOJ 1071 - 소트
+```py
+# 1071 - 소트
+# n개의 정수가 주어질 때 연속된 두 수가 연속된 값이 아니게 정렬한다. ((i번째 수 + 1) =/= (i+1)번째 수)
+
+import sys
+input = sys.stdin.readline
+def solution(nums):
+    # 오름차순 정렬 (순서가 제일 낮은 것을 출력해야 하므로)
+    nums = sorted(nums)
+    group = []
+    i = 0
+    # 각각의 수와 개수를 배열로 저장
+    while (i < len(nums)):
+        curr = nums[i]
+        count = 0
+        for j in range(i, len(nums)):
+            if (curr == nums[j]):
+                count += 1
+            else:
+                break
+        i += count
+        group.append([curr, count])
+    # index error이 발생할 수 있기 때문에 답에 영향을 주지 않는 값을 미리 넣어준다.
+    # 0 이상의 정수로 이루어진 배열을 반환하는 것이기 때문에 -1보다 작은 값을 넣어야 함
+    answer = [[-2,0]] 
+    while group:
+    # [숫자, 개수]를 저장한 리스트에 대해서 해당 리스트가 빈 배열이 될 때까지 진행
+        if len(group) == 2 and group[0][0] + 1 == group[1][0]:
+            answer.append([group[1][0],1])
+            group[1][1] -= 1
+            if group[1][1] == 0:
+                group.pop(1)
+        else:
+        # else문에는 len(group) == 2인데 두 값이 연속이 아닌 경우도 포함 -> 이 때는 정답 배열의 마지막 수와 비교를 해야 함
+            if (answer[-1][0] +1 != group[0][0]):
+                answer.append([group[0][0], 1])
+                group[0][1] -= 1
+                if group[0][1] == 0:
+                    group.pop(0)
+            else:
+                answer.append([group[1][0],1])
+                group[1][1] -= 1
+                if group[1][1] == 0:
+                    group.pop(1)
+    return answer
+
+N = int(input())
+nums = list(map(int, input().split()))
+ans = solution(nums)
+
 for i in ans:
-    print(i, end = ' ')
-```
-- Sol2
-```py
-# 17298 - 오큰수
-# 크기가 n인 수열 A
-# 오큰수 = A(i)의 오른쪽에 있으면서 A(i)보다 큰 수 중에서 가장 왼쪽에 있는 수 (그러한 수가 없다면 -1)
-
-import sys
-input = sys.stdin.readline
-
-n = int(input()) # 수열의 크기 n (1 <= n <= 1000000)
-A = list(map(int, input().split()))
-arr = [[A[i], i] for i in range(n)]
-answer = [-1]*n # 정답으로 출력할 리스트
-stack = []
-stack.append(0)
-i = 1
-
-while (stack and i < n):
-    while (stack and A[i] > A[stack[-1]]):
-        answer[stack[-1]] = A[i]
-        stack.pop()
-    stack.append(i)
-    i += 1
-
-for i in answer:
-    print(i, end = ' ')
+    a,b = i[0], i[1]
+    for _ in range(b):
+        print(a, end = ' ')
 ```
 
-#### 17299 - 오등큰수
-```py
-# 17299 - 오등큰수
-# 크기가 n인 수열 A에 대해서 수열의 각 원소에 대해서 오등큰수를 구하고자 한다.
-# 각 수가 수열에서 등장한 횟수를 F(A(i))라고 할 때 오등큰수는 오른쪽에 있으면서 A에 등장한 횟수가 F(A(i))보다 큰 수 중 가장 왼쪽에 있는 수
-#그런 수가 없으면 오등큰수는 -1이다.
-
-import sys
-input = sys.stdin.readline
-from collections import deque, Counter
-
-n = int(input()) # 수열 A의 크기 (1 <= n <= 1000000)
-A = list(map(int, input().split()))
-cnt = Counter(A)
-count = dict()
-for i in list(set(A)):
-    count[i] = cnt[i]
-stack = []
-stack.append(0)
-arr = list([cnt[i], i] for i in A)
-answer = [-1] * n
-
-i = 1
-while (stack and i < n):
-    # stack[-1]은 현재 수의 오른쪽에 있는 선택 될 수 있는 수중에서 가장 왼쪽에 있는 수이다.
-    # 이는 stack의 First in Last out의 FILO특성에서 차용한 것이다.
-    while (stack and arr[stack[-1]][0] < arr[i][0]):
-        #print(stack)
-        answer[stack[-1]] = arr[i][1]
-        stack.pop()
-    stack.append(i)
-    i += 1
-for i in answer:
-    print(i, end = ' ')
-# 가장 왼쪽에 있는 수를 찾으라는 것은 곧 가장 먼저 등장하는 수를 오등큰수로 결정하라는 의미
-```
-
-#### 20002 - 사과나무
-- Python3와 PyPy3을 이용해서 똑같은 알고리즘을 이용해서 제출했는데 둘 다 시간초과가 났다.
-- 그래서 그냥 C로 같은 알고리즘으로 제출했더니 훨씬 빨리 통과가 되었다.
-- 역시 알고리즘을 풀 때에는 C인 것인가...
-- 만약에 여기서 부분합을 dp[x][y] (1 <= x < n, 1 <= y < n)에 대해서 (0,0)부터 (x,y)까지의 정사각형에서의 부분합으로 정의한다면
-  - arr[x][y] += arr[x-1][y] + arr[x][y-1] - arr[x-1][y-1]
-```c
-#include <stdio.h>
-int main()
-{
-    int n;
-    int orch[300][300];
-    int dp[301][301];
-
-    scanf("%d", &n);
-    for (int i = 0;i<n;i++){
-        for (int j = 0;j<n;j++){
-            scanf("%d", &orch[i][j]);
-        }
-    }
-
-    for (int i = 1; i<=n; i++){
-        for (int j = 1; j <=n; j++){
-            dp[i][j] = orch[i-1][j-1] + dp[i][j-1];
-        }
-    }
-
-    long ans = -999999999;
-    int length, i, j,k;
-    for (length= 1; length <= n; length++){
-        for (i = 1; i<=n-length+1;i++){
-            for (j = 1; j<= n-length+1;j++){
-                int add = 0;
-                for (k = 0;k<length;k++){
-                    add += (dp[i+k][j+length-1] - dp[i+k][j-1]);
-                }
-                if (add > ans){
-                    ans = add;
-                }
-            }
-        }
-    }
-    printf("%d", ans);
-    return 0;
-}
-
-```
