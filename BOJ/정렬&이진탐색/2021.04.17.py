@@ -4,5 +4,3 @@ def is_prime(n):
         if n%i == 0:
             return i
     return 0
-
-is_prime(4141)
