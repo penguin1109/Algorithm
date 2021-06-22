@@ -102,4 +102,47 @@ print(answer)
 
 ```
 
-#### 5. 프로그래머스 - 조이스틱 (dfs)로 해결해야 하는 문제였던 것인가...! 
+#### 5. 1로 만들기
+- 시간 초과를 줄이기 위한 효과적인 방법 -> 어차피 k로 나누어 떨어지지 않으면 그 이후로는 남은수의 1뺀 값만 더하면 된다.
+- 따라서 그냥 k만큼 나누었을 때에 최대로 나눌 수 있는 방법을 먼저 구하면 된다.
+```py3
+import sys
+input = sys.stdin.readline
+
+n, k = map(int, input().split())
+answer = 0
+while True:
+    target = (n//k)*k 
+    answer += (n-target)
+    n = target
+    if (n < k):
+        break
+    answer += 1
+    n //= k
+
+answer += (n-1) # 1이 될때까지 1만큼 빼 줄 것이기 때문에 해당 부분 계산
+
+print(answer)
+```
+#### 백준 - 1439. 문자열 뒤집기
+- 시간 76ms
+```py3
+import sys
+input = sys.stdin.readline
+
+# 0과 1로만 이루어진 문자열
+# 문자열을 모두 같은 수로 만들기 위한 최소의 뒤집는 횟수
+
+q = list(map(int, input().strip()))
+zeros, ones = 0,0
+
+while q:
+    curr = q.pop()
+    if curr == 0:
+        zeros += 1
+    else:
+        ones += 1
+    while (q and q[-1] == curr):
+        q.pop()
+print(min(zeros, ones))
+```
