@@ -26,7 +26,30 @@ for i in range(1, n):
         answer += money * length[i]
 
 print(answer)
-    
+
+
+# 13305.주유소
+import sys
+input = sys.stdin.readline
+
+N = int(input())
+
+dist = list(map(int, input().split(' ')))
+cost = list(map(int, input().split(' ')))
+
+oil_c, curr_d = cost[0], dist[0]
+
+answer = 0
+
+for i in range(1, N):
+    answer += oil_c * curr_d
+    if (cost[i] < oil_c):
+        oil_c = cost[i]
+    if i != N-1:
+        curr_d = dist[i]
+
+print(answer)
+
 
 
 
