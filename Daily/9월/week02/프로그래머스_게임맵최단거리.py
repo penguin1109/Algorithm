@@ -8,6 +8,7 @@ from collections import deque
 import math
 answer = math.inf
 
+# 문제를 풀 때에 maps의 가로와 세로를 반영하지 않고 5x5 matrix일 것이라고만 생각해서 문제가 됬었음
 def solution(maps):
     global answer
     n, m = len(maps), len(maps[0])
