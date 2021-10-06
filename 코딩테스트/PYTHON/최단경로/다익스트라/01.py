@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # n개의 마을로 이루어진 나라
 # k시간 이하로 배달이 가능한 마을에서만 주문을 받음
 # 1번 마을을 시작으로 이동이 가능한 마을들의 개수를 반환하면 된다.
@@ -48,8 +48,7 @@ print(solution(N, road, K))
         
             
             
-            
-=======
+
 # 743. Network Delay Time
 import sys, collections, heapq
 input = sys.stdin.readline
@@ -87,4 +86,3 @@ if __name__ == "__main__":
     sol = Solution()
     answer = sol.networkDelayTime(times, n, k)
     print(answer)
->>>>>>> 166c12fb63db4b9f03e68b83844a0c12ea765459

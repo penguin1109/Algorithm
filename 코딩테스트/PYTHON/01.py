@@ -1,5 +1,4 @@
 import sys
-<<<<<<< HEAD
 input = sys.stdin.readline
 
 n, m, k = map(int, input().split()) # n -> 배열의 크기 m -> 숫자가 더해지는 횟수 
@@ -16,7 +15,6 @@ rep, more = m//(k+1), m%(k+1)
 answer = (fir*k+sec) * rep + fir * more
 
 print(answer)
-=======
 # defaultdict를 사용하면 key에 없는 값을 입력하려고 할 때에 자동으로 정해준 자료형에 맞는
 # 숫자로 기본 값으로 입력
 from collections import defaultdict
@@ -63,4 +61,3 @@ if __name__ == "__main__":
     
 
         
->>>>>>> 166c12fb63db4b9f03e68b83844a0c12ea765459
