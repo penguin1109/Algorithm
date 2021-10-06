@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # n개의 마을로 이루어진 나라
 # k시간 이하로 배달이 가능한 마을에서만 주문을 받음
 # 1번 마을을 시작으로 이동이 가능한 마을들의 개수를 반환하면 된다.
@@ -48,3 +49,42 @@ print(solution(N, road, K))
             
             
             
+=======
+# 743. Network Delay Time
+import sys, collections, heapq
+input = sys.stdin.readline
+
+class Solution:
+    def networkDelayTime(self,times, n, k):
+        graph = collections.defaultdict(list)
+        # 출발지, 도착지, 소요시간
+        for u, v, w in times:
+            graph[u].append((v, w))
+        Q = [(0, k)]
+        dist = collections.defaultdict(int)
+
+        while Q:
+            time, node = heapq.heappop(Q)
+            if node not in dist:
+                dist[node] = time
+                for v, w in graph[node]:
+                    temp = time + w
+                    heapq.heappush(Q, (temp, v))
+        
+        if len(dist) == n:
+            return max(dist.values())
+        
+        return -1
+
+
+            
+
+
+
+if __name__ == "__main__":
+    times = [[2,1,1],[2,3,1],[3,4,1]]
+    n,k = 4,2
+    sol = Solution()
+    answer = sol.networkDelayTime(times, n, k)
+    print(answer)
+>>>>>>> 166c12fb63db4b9f03e68b83844a0c12ea765459
